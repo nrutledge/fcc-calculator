@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
+import './Calculator.css';
 import Display from './Display';
 import Button from './Button';
 
-const style = {
-    width: 360,
-    padding: '10px',
-    border: '1px solid #E7E7E7',
-    borderRadius: 10,
-    boxShadow: '2px 2px 8px rgba(0, 0, 0, 0.15)',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center'
+const symbols = {
+    times: '\u00D7',
+    divide: '\u00F7',
+    plus: '+',
+    minus: '-'
 }
 
-const isOperator = (string) => {
-    return string === 'x' || string === '-' || string === '+' || string === '/';
+const checkOperator = (char) => {
+    if (typeof char !== 'string') { char = char.toString() }
+    const charCode = char.charCodeAt(0);
+
+    if (char === symbols.times || charCode === 215) {  return '*'; }
+    if (char === symbols.divide || charCode === 247) { return '/'; }
+    if (char === symbols.plus) { return '+'; }
+    if (char === symbols.minus) { return '-'; }
+
+    return '';
 };
 
 const isNumber = (value) => {
@@ -47,6 +51,31 @@ export default class Calculator extends Component {
         window.addEventListener('keydown', this.handleKeyDown);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    handleKeyDown(event) {
+        const key = event.key;
+        if (key === 'Enter' || key === '=') { this.calcAnswer(); } 
+
+        if (isNumber(key)) { return this.addNumber(key); } 
+        
+        if (key === '.') { return this.addDecimal(); } 
+        
+        if (key === '*') { return this.addOperator(symbols.times); } 
+ 
+        if (key === '/') { return this.addOperator(symbols.divide); } 
+
+        if (key === '+') { return this.addOperator(symbols.plus); } 
+
+        if (key === '-') { return this.addOperator(symbols.minus); } 
+
+        if (key === 'Backspace') { return this.handleBackSpace(); } 
+    
+        if (key === 'Escape') { return this.clear(); }
+    }
+
     // Returns array of start to second last position of formula
     getFormulaStart() {
         return this.state.formula.slice(0, -1);
@@ -55,33 +84,6 @@ export default class Calculator extends Component {
     // Returns string of last position in array
     getFormulaEnd() {
         return this.state.formula.slice(-1)[0];
-    }
-
-    clear() {
-        this.setState({ 
-            formula: ['0'],
-            isAnswer: false
-        });
-    }
-
-    handleKeyDown(event) {
-        const key = event.key;
-
-        if (isNumber(key)) {
-            this.addNumber(key);
-        } else if (key === '.') {
-            this.addDecimal();
-        } else if(isOperator(key)) {
-            this.addOperator(key);
-        } else if(key === '*') {
-            this.addOperator('x');
-        } else if (key === 'Backspace') {
-            this.handleBackSpace();
-        } else if (key === 'Enter' || key === '=') {
-            this.calcAnswer();
-        } else if (key === 'Escape') {
-            this.clear();
-        }
     }
 
     addNumber(number) {
@@ -93,7 +95,7 @@ export default class Calculator extends Component {
 
         if (formulaEnd === '0') {
             newFormula = [...formulaStart, number];
-        } else if (isOperator(formulaEnd)) {
+        } else if (checkOperator(formulaEnd)) {
             newFormula = [...formulaStart, formulaEnd, number];
         } else {
             newFormula = [...formulaStart, formulaEnd.concat(number)];
@@ -113,7 +115,7 @@ export default class Calculator extends Component {
 
         if (formulaEnd.indexOf('.') >= 0) { return; }
 
-        if (isOperator(formulaEnd)) {
+        if (checkOperator(formulaEnd)) {
             newFormula = [...formulaStart, formulaEnd, '0.'];
         } else {
             newFormula = [...formulaStart, formulaEnd.concat('.')]
@@ -130,7 +132,7 @@ export default class Calculator extends Component {
         const formulaEnd = this.getFormulaEnd();
         let newFormula = [];
 
-        if (isOperator(formulaEnd)) {
+        if (checkOperator(formulaEnd)) {
             newFormula = [...formulaStart, operator];
         } else {
             newFormula = [...formulaStart, formulaEnd, operator];
@@ -193,7 +195,7 @@ export default class Calculator extends Component {
         // Multiplication/division before addition/subtraction
         const operations = [
             { 
-                'x': (a, b) => a * b,
+                '*': (a, b) => a * b,
                 '/': (a, b) => a / b
             }, {
                 '+': (a, b) => a + b,
@@ -204,7 +206,7 @@ export default class Calculator extends Component {
         // Reduce formula array to single number element containing answer
         for (let ops of operations) {
             for (let i = 1; i < numFormula.length - 1; ) {
-                const operator = numFormula[i];
+                const operator = checkOperator(numFormula[i]);
                 
                 if (ops[operator]) {
                     const a = numFormula[i - 1];
@@ -231,40 +233,47 @@ export default class Calculator extends Component {
         });
     }
 
+    clear() {
+        this.setState({ 
+            formula: ['0'],
+            isAnswer: false
+        });
+    }
+
     render() {
         const formulaStart = this.getFormulaStart();
         const formulaEnd = this.getFormulaEnd();
 
         return (
-            <div style={style}>
+            <div className='Calculator'>
                 <Display isAnswer={this.state.isAnswer} formulaStart={formulaStart} formulaEnd={formulaEnd}/>
                 <div style={{ width: '100%', display: 'flex'}}>
-                    <Button id='clear' value='AC' classes='button wide' action={this.clear} />              
-                    <Button id='divide' value='/' classes='button standard' action={this.addOperator} />
-                    <Button id='multiply' value='x' classes='button standard' action={this.addOperator} />
+                    <Button id='clear' value='AC' type='wide blue' action={this.clear} />              
+                    <Button id='divide' value='&divide;' type='standard blue' action={this.addOperator} />
+                    <Button id='multiply' value='&times;' type='standard blue' action={this.addOperator} />
                 </div>
                 <div style={{ width: '100%', display: 'flex' }}>
-                    <Button id='one' value={1} classes='button standard' action={this.addNumber} />
-                    <Button id='two' value={2} classes='button standard' action={this.addNumber} />
-                    <Button id='three' value={3} classes='button standard' action={this.addNumber} />
-                    <Button id='subtract' value='-' classes='button standard' action={this.addOperator} />
+                    <Button id='one' value={1} type='standard' action={this.addNumber} />
+                    <Button id='two' value={2} type='standard' action={this.addNumber} />
+                    <Button id='three' value={3} type='standard' action={this.addNumber} />
+                    <Button id='subtract' value='-' type='standard blue' action={this.addOperator} />
                 </div>
                 <div style={{ width: '100%', display: 'flex' }}>
-                    <Button id='four' value={4} classes='button standard' action={this.addNumber} />
-                    <Button id='five' value={5} classes='button standard' action={this.addNumber} />
-                    <Button id='six' value={6} classes='button standard' action={this.addNumber} />
-                    <Button id='add' value='+'  classes='button standard' action={this.addOperator} />
+                    <Button id='four' value={4} type='standard' action={this.addNumber} />
+                    <Button id='five' value={5} type='standard' action={this.addNumber} />
+                    <Button id='six' value={6} type='standard' action={this.addNumber} />
+                    <Button id='add' value='+' type='standard blue' action={this.addOperator} />
                 </div>
                 <div style={{ width: '75%', display: 'flex', flexWrap: 'wrap' }}>
-                    <Button id='seven' value={7} classes='button standard' action={this.addNumber} />
-                    <Button id='eight' value={8} classes='button standard' action={this.addNumber} />
-                    <Button id='nine' value={9} classes='button standard' action={this.addNumber} />
-                    <Button id='reverse' value='&plusmn;' classes='button standard' action={this.reverseNumber} />  
-                    <Button id='zero' value={0} classes='button standard' action={this.addNumber} />
-                    <Button id='decimal' value={'.'} classes='button standard' action={this.addDecimal} />
+                    <Button id='seven' value={7} type='standard' action={this.addNumber} />
+                    <Button id='eight' value={8} type='standard' action={this.addNumber} />
+                    <Button id='nine' value={9} type='standard' action={this.addNumber} />
+                    <Button id='reverse' value='&plusmn;' type='standard' action={this.reverseNumber} />  
+                    <Button id='zero' value={0} type='standard' action={this.addNumber} />
+                    <Button id='decimal' value={'.'} type='standard' action={this.addDecimal} />
                 </div>
                 <div style={{ width: '25%', display: 'flex' }}>
-                    <Button id='equals' value='=' classes='button tall' action={this.calcAnswer} />               
+                    <Button id='equals' value='=' type='tall blue' action={this.calcAnswer} />               
                 </div>
              </div>
         );

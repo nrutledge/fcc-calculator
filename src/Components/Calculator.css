@@ -1,0 +1,12 @@
+.Calculator {
+    width: 360px;
+    padding: 10px;
+    border: 1px solid #E7E7E7;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #FFF, #DFDFDF);
+}

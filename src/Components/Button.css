@@ -1,10 +1,19 @@
 .button {  
-    background-color: #F1F1F1;
+    font-size: 20px;
+    color: #222;
+    background-color: #FFF;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 5px;
+    outline: 0;
+    border: none;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.button:active {
+    box-shadow: none;
 }
 
 .standard {
@@ -21,4 +30,16 @@
 .tall {
     width: 80px;
     height: 130px;
+}
+
+.blue {
+    background-color: rgb(149, 223, 255);
+}
+
+.green {
+    background-color: rgb(133, 225, 193);
+}
+
+.grey {
+    background-color: rgb(222, 222, 222); 
 }
