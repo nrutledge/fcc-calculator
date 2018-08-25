@@ -1,10 +1,3 @@
-/*
- @TODO:
-    - Fix case where empty string in last elem calculates to NaN
-    - Move css to separate files
-    - Do final review/refactor
-*/
-
 import React, { Component } from 'react';
 import Display from './Display';
 import Button from './Button';
