@@ -188,7 +188,7 @@ export default class Calculator extends Component {
             formula = this.getFormulaStart();
         } else {
             // Discard last two elements if not numbers.
-            // Necessary for case where last elem is empty
+            // Necessary for case where last element is empty
             // string and second last is operator
             formula = this.getFormulaStart().slice(0, -1);
         }
