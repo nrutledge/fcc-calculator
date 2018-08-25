@@ -165,8 +165,8 @@ export default class Calculator extends Component {
     }
 
     calcAnswer() {
-        // Don't allow additional calculations on repeated presses of equals button
-        if (this.state.isAnswer) { return };
+        // Do not perform repeat calculations or all calculations on empty string
+        if (this.state.isAnswer || !this.getFormulaEnd()) { return };
 
         // Get clean formula without trailing operator, if one exists
         let lastElem = this.getFormulaEnd();
