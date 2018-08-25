@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Calculator.css';
-import Display from './Display';
-import Button from './Button';
+import Display from '../Display/Display';
+import Button from '../Button/Button';
 
 const symbols = {
     times: '\u00D7',
