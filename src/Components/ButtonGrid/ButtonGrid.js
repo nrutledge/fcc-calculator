@@ -6,7 +6,7 @@ import './Button.css';
 
 const ButtonGrid = (props) => {
     return (
-        <div className='grid-outer' style={{ width: '100%', height: '300px' }}>
+        <div className='grid-outer' style={{ width: '100%', height: '360px' }}>
             <div className='grid-inner' style={{ width: '100%', height: '20%' }}>
                 <Button 
                     id='clear' 
