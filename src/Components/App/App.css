@@ -4,6 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("./images/wood_bg.jpg");
+  background-image: url("../../images/wood_bg.jpg");
   background-size: cover;
 }
