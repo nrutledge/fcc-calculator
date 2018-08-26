@@ -1,5 +1,6 @@
 .Calculator {
-    width: 360px;
+    width: 90%;
+    max-width: 360px;
     padding: 10px;
     border: 1px solid #E7E7E7;
     border-radius: 10px;

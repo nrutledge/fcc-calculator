@@ -1,0 +1,4 @@
+.grid-outer, .grid-inner {
+    display: flex;
+    flex-wrap: wrap;
+}

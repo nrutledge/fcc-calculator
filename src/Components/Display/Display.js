@@ -1,10 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { getFormulaStart, getFormulaEnd } from '../../helpers';
 import './Display.css'
 
 const Display = (props) => {
-    const formulaStart = props.formulaStart.length > 0 ? props.formulaStart.join(' ') + ' ' : '';
-    const formulaEnd = props.formulaEnd;
+    const formulaEnd = getFormulaEnd(props.formula);
 
+    // Get string of formulaStart array for rendering
+    const formulaStart = getFormulaStart(props.formula).length > 0 ? 
+        getFormulaStart(props.formula).join(' ') + ' ' : '';
+    
     return (
         <div id={props.id} className="Display">
             <div style={{ minHeight: 20 }}>{props.isAnswer && formulaStart}</div>
@@ -13,6 +18,11 @@ const Display = (props) => {
             </div>
         </div>
     );
+}
+
+Display.propTypes = {
+    isAnswer: PropTypes.bool,
+    formula: PropTypes.array
 }
 
 export default Display;

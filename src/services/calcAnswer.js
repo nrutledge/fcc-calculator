@@ -59,7 +59,7 @@ export const calcAnswer = (formula, isAnswer) => {
     }
 
     // Limit decimal places and round away those floating point precision errors
-    const precisionMultiplier = 1000000000000;
+    const precisionMultiplier = 10000000000;
     const answerString = (Math.round(numFormula[0] * precisionMultiplier) / precisionMultiplier).toString();
 
     return { 
