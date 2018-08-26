@@ -13,6 +13,9 @@ const Button = ({ id, value, action, width, height, bgColor }) => {
     };
 
     return (
+        // Using div instead of button to prevent browswer behaviour where enter
+        // key fires click event on last active button (which causes miscalculation 
+        // when enter key is used). "button" role added for screen readers.
         <div 
             id={id} 
             role="button" 
