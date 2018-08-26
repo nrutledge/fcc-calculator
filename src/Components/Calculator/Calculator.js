@@ -31,16 +31,13 @@ export default class Calculator extends Component {
     }
 
     handleInput = (event) => {
-        console.log('symbol ', symbols.plusMinus);
-        console.log('key ', event.key);
-
         const { formula, isAnswer} = this.state;
         const key = (event.key) ? event.key : (typeof event === 'string') ? event : null;
 
         if (!key) { return };
         
         if (isNumber(key)) { 
-            return this.setState(addNumber(key, formula, isAnswer)); 
+            return this.setState(addNumber(key, formula, isAnswer));
         }
 
         if (key === symbols.decimal) { 
