@@ -43,7 +43,7 @@ const ButtonGrid = (props) => {
                 <Button id='seven' value={'7'} width='33.3333%' height='25%' action={props.handleInput}/>
                 <Button id='eight' value={'8'} width='33.3333%' height='25%' action={props.handleInput}/>
                 <Button id='nine' value={'9'} width='33.3333%' height='25%' action={props.handleInput}/>
-                <Button id='reverse' value='&plusmn;' width='33.3333%' height='25%' action={props.handleInput}/>  
+                <Button id='reverse' value={symbols.plusMinus} width='33.3333%' height='25%' action={props.handleInput}/>  
                 <Button id='zero' value={'0'} width='33.3333%' height='25%' action={props.handleInput}/>
                 <Button id='decimal' value={symbols.decimal} width='33.3333%' height='25%' action={props.handleInput}/>
             </div>
@@ -54,14 +54,16 @@ const ButtonGrid = (props) => {
                     width='100%' 
                     height='25%'
                     bgColor='rgb(149, 223, 255)' 
-                    action={props.handleInput}/>
+                    action={props.handleInput}
+                />
                 <Button 
                     id='add' 
                     value={symbols.plus} 
                     width='100%' 
                     height='25%'
                     bgColor='rgb(149, 223, 255)' 
-                    action={props.handleInput}/>
+                    action={props.handleInput}
+                />
                 <Button 
                     id='equals' 
                     value={symbols.equals} 
